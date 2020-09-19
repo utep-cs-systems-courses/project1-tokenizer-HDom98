@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "tokenizer.h"
+#define MAX 1000 // the max amount of chars
 
 int main()
 {
-  char input[1000];
+  char input[MAX];
   printf("> Type a string \n");
   
   printf("> ");
@@ -44,7 +45,7 @@ int non_space_char(char c)
 char *word_start(char *str)
 {
   char *start;
-  for(int i = 1; i < 1000; i++)
+  for(int i = 1; i <= MAX; i++)
   {
     /* checks if the current char is a non space char and 
        if there is a space before the current char*/
@@ -64,7 +65,7 @@ char *word_start(char *str)
 char *word_terminator(char *word)
 {
   char *terminator;
-  for(int i = 1; i <= 1000; i++)
+  for(int i = 1; i <= MAX; i++)
     {
       if(word[i] == '\0')
 	{
@@ -84,7 +85,7 @@ int count_words(char *str)
       return count;
     }
   
-  for(int i = 1; i < 1000; i++)
+  for(int i = 1; i < MAX; i++)
     {
       if(str[i] == '\0')
 	{
@@ -99,14 +100,22 @@ int count_words(char *str)
 char *copy_string(char *inStr, short len)
 {//allocate memory for strings
   char *copiedStr = malloc(len*sizeof(char));
-  return copiedStr;
+  for(int i = 0; i < MAX; i++){
+    if(inStr[i] == '\0'){
+      copiedStr[i] = '\0';
+      return copiedStr;
+    }else
+    {
+      copiedStr[i] = inStr[i];
+    }
+  }
 }
 
 char **tokenize(char *str)
 {
   char **token;
   int wordCount = count_words(str);
-  for(int i = 0; i <= 1000; i++)
+  for(int i = 0; i <= MAX; i++)
     {
       if(str[i] == '\0'){
 	return token;
@@ -115,4 +124,33 @@ char **tokenize(char *str)
 	
       }
     }
+}
+
+void print_tokens(char **tokens){
+  for(int i = 0; i < MAX; i++)
+    {
+      if((*tokens)[i] == '\0')
+      {
+	printf(" %s \n",(*tokens)[i]);
+	break;
+      }else
+      {
+	printf(" %s \n",(*tokens)[i]);
+      }
+  }
+}
+
+void free_tokens(char **tokens){
+  for(int i = 0; i < MAX; i++)
+    {
+      if((*tokens)[i] == '\0')
+	{
+	  free(tokens[i]);
+	  break;
+	}else
+	{
+	  free(tokens[i]);
+	}
+    }
+  free(*tokens);
 }
