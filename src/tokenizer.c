@@ -45,18 +45,21 @@ int non_space_char(char c)
 char *word_start(char *str)
 {
   char *start;
+  int currentStart = 0;
+  if(str[1] = '\0')
+    {
+      /*if there are no words return 0 pointer*/
+      start = &str[1];
+      return start;
+    }
   for(int i = 1; i <= MAX; i++)
   {
-    /* checks if the current char is a non space char and 
-       if there is a space before the current char*/
-    if((non_space_char(str[i])==1) && (space_char(str[i-1])==1))
+    if((non_space_char(str[i]) == 1) && (space_char(str[i-1]) == 1))
     {
-      start = &str[i];
-      return start;
+      start[currentStart] = &str[i];
+      currentStart++;
     }else if(str[i] == '\0')
-    {
-      //if theres only 1 word return original
-      start = &str[0];
+      {//returns pointer of all word starts
       return start;
     }
   }
@@ -65,10 +68,11 @@ char *word_start(char *str)
 char *word_terminator(char *word)
 {
   char *terminator;
+  int currentTerm;
   for(int i = 1; i <= MAX; i++)
     {
-      if(word[i] == '\0')
-	{
+      if((space_char(word[i]) == 1) && (non_space_char(word[i-1]))
+	{/*if the current char is a space and the previous is a char that is the terminator*/
 	  terminator = &word[i];
 	  return terminator;
 	}
@@ -77,20 +81,15 @@ char *word_terminator(char *word)
 
 int count_words(char *str)
 {
-  int count = 1;
-  char *nextWord = word_start(str);
+  int count = 1;/*Assuming there's at least 1 word*/
   
-  if(&nextWord == &str)
-    {//if there's only 1 word
-      return count;
-    }
-  
-  for(int i = 1; i < MAX; i++)
+  for(int i = 1; i <= MAX; i++)
     {
       if(str[i] == '\0')
 	{
+	  count++;
 	  return count;
-	}else if((space_char(str[i-1])) == 1 && (non_space_char(str[i])))
+	}else if((space_char(str[i-1])) == 1 && (non_space_char(str[i]) == 1))
 	{
 	  count++;
 	}
@@ -98,31 +97,30 @@ int count_words(char *str)
 }
 
 char *copy_string(char *inStr, short len)
-{//allocate memory for strings
-  char *copiedStr = malloc(len*sizeof(char));
-  for(int i = 0; i < MAX; i++){
-    if(inStr[i] == '\0'){
-      copiedStr[i] = '\0';
-      return copiedStr;
-    }else
+{
+  char *copiedStr;
+  for(int i = 0; i <= len+1; i++)
     {
-      copiedStr[i] = inStr[i];
+    if(inStr[i] == '\0')
+      {
+      copiedStr[i] = &inStr[i];
+      return copiedStr;
+      }else
+      {
+	copiedStr[i] = &inStr[i];
+      }
     }
-  }
 }
 
 char **tokenize(char *str)
 {
-  char **token;
-  int wordCount = count_words(str);
-  for(int i = 0; i <= MAX; i++)
+  short wordCount = count_words(str);
+  char **token = malloc(wordCount*sizeof(char*);
+  char *starts = word_start(str);
+  
+  for(int i = 0; i<= wordCount; i++)
     {
-      if(str[i] == '\0'){
-	return token;
-      }else
-      {
-	
-      }
+      
     }
 }
 
@@ -142,7 +140,7 @@ void print_tokens(char **tokens){
 
 void free_tokens(char **tokens){
   for(int i = 0; i < MAX; i++)
-    {
+    {//free the contents of tokens first
       if((*tokens)[i] == '\0')
 	{
 	  free(tokens[i]);
@@ -152,5 +150,5 @@ void free_tokens(char **tokens){
 	  free(tokens[i]);
 	}
     }
-  free(*tokens);
+  free(*tokens);//free the pointer
 }
