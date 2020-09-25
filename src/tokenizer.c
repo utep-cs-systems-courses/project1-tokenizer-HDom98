@@ -54,23 +54,23 @@ int non_space_char(char c)
 char *word_start(char *str)
 {
   char *start;
-  int currentStart = 0;
   if(str[1] == '\0')
     {
       /*if there are no words return 0 pointer*/
-      start = &str[1];
+      start = &str[0];
       return start;
     }
-  for(int i = 1; i <= MAX; i++)
+  for(int i = 0; i <= MAX; i++)
   {
-    if((non_space_char(str[i]) == 1) && (space_char(str[i-1]) == 1))
-    {
-      start[currentStart] = str[i];
-      currentStart++;
-    }else if(str[i] == '\0')
-      {//returns pointer of all word starts
+    if((non_space_char(str[i]) == 1))
+      {
+      start = &str[i];
       return start;
-    }
+      }/*else if((non_space_char(str[0]) == 1))
+      {
+	start = &str[0];
+	return start;
+      }*/
   }
 }
 
@@ -107,10 +107,10 @@ int count_words(char *str)
 char *copy_string(char *inStr, short len)
 {
   printf("inside copy\n");
-  char *outStr = malloc(len*sizeof(char));
-  for(int i = 0; i <= len; i++)
+  char *outStr = malloc(len * sizeof(char));
+  for(int i = 0; i <= len+1; i++)
     {
-    if(inStr[i] == '\0')
+    if(i == len)
       {
       outStr[i] = '\0';
       return outStr;
@@ -125,22 +125,20 @@ char **tokenize(char *str)
 {
   printf("inside tokenize\n");
   short wordCount = count_words(str);
-  printf("counted words\n");
   char *tokenWords[wordCount];
   short wordLength;
-  printf("made *\n");
-  char **tokens = &tokenWords[0];
-  printf("made **\n");
+  char **tokens;
   char *starts;
 
-  printf("called values\n");
-  starts = word_start(str);/* pointer to all the starts */
-  for(int i = 0; i< wordCount; i++)
+  tokenWords[wordCount] = '\0';
+  for(int i = 0; i< wordCount && str[i] != '\0'; i++)
     {
+      starts = word_start(str);
+      printf(" %s\n", starts);
       wordLength = 0;
       for(int j = 0; j < MAX; j++)
 	{/* measuring the length of the current word */
-	  if(non_space_char(str[j]) == 0)
+	  if(non_space_char(starts[j]) == 0)
 	    {
 	      break;
 	    }else
@@ -151,26 +149,28 @@ char **tokenize(char *str)
       
       printf("word length is %d \n",wordLength);
       
-      str = word_terminator((starts+i));/* stuck here */ 
-      tokenWords[i] = (copy_string(str, wordLength));/* and here */
+      tokenWords[i] = (copy_string(starts, wordLength));
+      str = word_terminator(starts);
+      *tokens[i] = &tokenWords[i];
     }
   printf("finished tokenize\n");
+  
   return tokens;
 }
 
 void print_tokens(char **tokens){
-  printf("inside print\n");
+  //printf(" %s\n",tokens[0]);
   for(int i = 0; i < MAX; i++)
     {
-      if(tokens[i] == NULL)
+      if((*tokens)[i] == '\0')
       {
 	break;
       }else
       {
-	printf(" %s \n",(*tokens)[i]);
+	printf(" %s \n",tokens[i]);
       }
   }
-  printf("finished string\n");
+  
 }
 
 void free_tokens(char **tokens){
@@ -184,8 +184,8 @@ void free_tokens(char **tokens){
 	}else
 	{
 	  free(tokens[i]);
-	  *tokens++;
+	  (*tokens)++;
 	}
     }
-  free (*tokens);/*free the pointer*/
+  free (tokens);/*free the pointer*/
 }
