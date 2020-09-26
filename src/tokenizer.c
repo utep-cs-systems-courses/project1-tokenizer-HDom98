@@ -110,7 +110,7 @@ char *copy_string(char *inStr, short len)
   char *outStr = malloc(len * sizeof(char));
   for(int i = 0; i <= len+1; i++)
     {
-    if(i == len)
+    if(i == len+1)
       {
       outStr[i] = '\0';
       return outStr;
@@ -130,7 +130,7 @@ char **tokenize(char *str)
   char **tokens;
   char *starts;
 
-  tokenWords[wordCount] = '\0';
+  //tokens[wordCount] = '\0';
   for(int i = 0; i< wordCount && str[i] != '\0'; i++)
     {
       starts = word_start(str);
@@ -151,23 +151,24 @@ char **tokenize(char *str)
       
       tokenWords[i] = (copy_string(starts, wordLength));
       str = word_terminator(starts);
-      *tokens[i] = &tokenWords[i];
+      //tokens = &tokenWords;
     }
   printf("finished tokenize\n");
-  
+  tokens = tokenWords;
   return tokens;
 }
 
 void print_tokens(char **tokens){
-  //printf(" %s\n",tokens[0]);
+  printf(" %s\n",tokens[0]);
+  printf(" %s\n",tokens[1]);
   for(int i = 0; i < MAX; i++)
     {
-      if((*tokens)[i] == '\0')
+      if(tokens[i] == NULL)
       {
 	break;
       }else
       {
-	printf(" %s \n",tokens[i]);
+	printf(" %s\n",tokens[i]);
       }
   }
   
