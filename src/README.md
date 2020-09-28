@@ -1,12 +1,7 @@
 Project 1: Tokenizer
 ====================
 # Instructions:
+This program gets an input, tokenize that input, stores it in a history,and
+prints the tokens.
 
-You should document your tokenizer in this file.
-
-This file is written in the refreshingly simple `markdown` text
-formatting language.
-
-To learn about text formatting using markdown, we encourage you to examine 
- - [../README.md](../README.md)
- - the online [Markdown Guide](https://www.markdownguide.org/).
+!quit exits the program.

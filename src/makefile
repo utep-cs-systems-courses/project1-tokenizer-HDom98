@@ -2,7 +2,7 @@ tokenize: tokenizer.o uimain.o history.o
 	cc -o tokenize tokenizer.o uimain.o history.o
 
 clean:
-	rm -f*.0 tokenizer
+	rm -f *.o tokenize
 tokenizer.o: tokenizer.h tokenizer.c
 
 history.o: history.h history.c
