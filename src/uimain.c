@@ -3,26 +3,27 @@
 #include "tokenizer.h"
 #include "history.h"
 #define MAX 1000
-int main()
+
+int main(int argc, char *argv[])
 {
   char input[MAX];
-  while(1)
+  char *toToken;
+  char **tokens;
+
+  while(input != "!quit")
     {
-      printf("Type a string \n");
+      printf(">Type a string \n");
   
       printf("> ");
-      scanf(" %s", input);
-      if(input == '0')
-	{
-	  printf("Goodbye :)");
-	  break;
-	}
-      //add to history here
-      //tokenize here
-      
+      scanf("%[^\n]", input);
       printf("\n");
-      //print tokens here
-      //free tokens here
+      toToken = input;
+      //add to history here
+      tokens = tokenize(toToken);
+      printf("tokenized\n");
+      
+      print_tokens(tokens);
+      free_tokens(tokens);
       //printf(" %s\n", input);
       
     }
