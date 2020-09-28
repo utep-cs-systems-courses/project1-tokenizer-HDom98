@@ -11,21 +11,20 @@ int main(int argc, char *argv[])
   char **tokens;
 
   while(input != "!quit")
-    {
+    {/* type !quit to quit */
       printf(">Type a string \n");
   
       printf("> ");
       scanf("%[^\n]", input);
       printf("\n");
+      
       toToken = input;
-      //add to history here
       tokens = tokenize(toToken);
       printf("tokenized\n");
       
       print_tokens(tokens);
       free_tokens(tokens);
-      //printf(" %s\n", input);
-      
     }
+  printf("Good-bye :)");
   return 0;
 }
